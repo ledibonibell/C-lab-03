@@ -1,10 +1,28 @@
-﻿using System;
+using System;
 
 class Car
 {
-    public string Name { get; set; }
-    public int Engine { get; set; }
-    public double MaxSpeed { get; set; }
+    private string name;
+    private int engine;
+    private double maxSpeed;
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+
+    public int Engine
+    {
+        get { return engine; }
+        set { engine = value; }
+    }
+
+    public double MaxSpeed
+    {
+        get { return maxSpeed; }
+        set { maxSpeed = value; }
+    }
 
     public Car(string name, int engine, double maxSpeed)
     {
@@ -17,6 +35,7 @@ class Car
     {
         return Name;
     }
+
 
     //public static bool operator >(Car left, Car right)
     //{
