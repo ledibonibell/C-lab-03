@@ -1,44 +1,38 @@
-﻿using System;
+using System;
 
 public class Currency
 {
-    private double Value { get; set; }
+    private double _value;
+
+    public double Value
+    {
+        get { return _value; }
+        set { _value = value; }
+    }
 
     public Currency(double value)
     {
-        Value = value;
+        _value = value;
     }
 
-    public CurrencyUSD ToUSD()
-    {
-        return new CurrencyUSD(Value);
-    }
-
-    public CurrencyEUR ToEUR()
-    {
-        return new CurrencyEUR(Value);
-    }
-
-    public CurrencyRUB ToRUB()
-    {
-        return new CurrencyRUB(Value);
-    }
 }
 
 public class CurrencyUSD : Currency
 {
-    public CurrencyUSD (double value) : base(value)
+    public CurrencyUSD(double value) : base(value)
     {
     }
 
-    public CurrencyEUR ToEUR(double value)
+    public CurrencyEUR ToEUR()
     {
-        return new CurrencyEUR(value * 0.93);
+        double exchangeRate = 0.93;
+        return new CurrencyEUR(Value * exchangeRate);
     }
 
-    public CurrencyRUB ToRUB(double value)
+    public CurrencyRUB ToRUB()
     {
-        return new CurrencyRUB(value * 96);
+        double exchangeRate = 96;
+        return new CurrencyRUB(Value * exchangeRate);
     }
 }
 
@@ -48,14 +42,16 @@ public class CurrencyEUR : Currency
     {
     }
 
-    public CurrencyUSD ToUSD(double value)
+    public CurrencyUSD ToUSD()
     {
-        return new CurrencyUSD(value * 1.07);
+        double exchangeRate = 1.07;
+        return new CurrencyUSD(Value * exchangeRate);
     }
 
-    public CurrencyRUB ToRUB(double value)
+    public CurrencyRUB ToRUB()
     {
-        return new CurrencyRUB(value * 101);
+        double exchangeRate = 102;
+        return new CurrencyRUB(Value * exchangeRate);
     }
 }
 
@@ -65,29 +61,74 @@ public class CurrencyRUB : Currency
     {
     }
 
-    public CurrencyUSD ToUSD(double value)
+    public CurrencyUSD ToUSD()
     {
-        return new CurrencyUSD(value * 0.01);
+        double exchangeRate = 0.013;
+        return new CurrencyUSD(Value * exchangeRate);
     }
 
-    public CurrencyEUR ToEUR(double value)
+    public CurrencyEUR ToEUR()
     {
-        return new CurrencyEUR(value * 0.01);
+        double exchangeRate = 0.01;
+        return new CurrencyEUR(Value * exchangeRate);
     }
 }
 
-class lab033
+
+class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        Currency baseCurrency = new Currency(100);
-        CurrencyUSD usd = baseCurrency.ToUSD();
+        Console.WriteLine("Select the amount of currency:");
+        double n = Convert.ToDouble(Console.ReadLine());
 
-        CurrencyRUB rub = usd.ToRUB();
-        CurrencyEUR eur = usd.ToEUR();
+        Console.WriteLine("Select the type of currency:");
+        string type = Console.ReadLine();
 
-        Console.WriteLine($"USD: {usd}");
-        Console.WriteLine($"EUR: {eur}");
-        Console.WriteLine($"RUB: {rub}");
+        switch (type)
+        {
+            case "USD":
+                CurrencyUSD usd = new CurrencyUSD(n);
+                Console.WriteLine($"We have: {usd.Value}");
+
+                CurrencyUSD usd1 = usd;
+                CurrencyEUR eur1 = usd.ToEUR();
+                CurrencyRUB rub1 = usd.ToRUB();
+
+                Console.WriteLine($"\nUSD from RUB: {usd1.Value}");
+                Console.WriteLine($"EUR from USD: {eur1.Value}");
+                Console.WriteLine($"RUB from EUR: {rub1.Value}");
+
+                break;
+            case "EUR":
+                CurrencyEUR eur = new CurrencyEUR(n);
+                Console.WriteLine($"We have: {eur.Value}");
+
+                CurrencyUSD usd2 = eur.ToUSD();
+                CurrencyEUR eur2 = eur;
+                CurrencyRUB rub2 = eur.ToRUB();
+
+                Console.WriteLine($"\nUSD from RUB: {usd2.Value}");
+                Console.WriteLine($"EUR from USD: {eur2.Value}");
+                Console.WriteLine($"RUB from EUR: {rub2.Value}");
+
+                break;
+            case "RUB":
+                CurrencyRUB rub = new CurrencyRUB(n);
+                Console.WriteLine($"We have: {rub.Value}");
+
+                CurrencyUSD usd3 = rub.ToUSD();
+                CurrencyEUR eur3 = rub.ToEUR();
+                CurrencyRUB rub3 = rub;
+
+                Console.WriteLine($"\nUSD from RUB: {usd3.Value}");
+                Console.WriteLine($"EUR from USD: {eur3.Value}");
+                Console.WriteLine($"RUB from EUR: {rub3.Value}");
+
+                break;
+            default:
+                Console.WriteLine("Try again now");
+                break;
+        }
     }
 }
